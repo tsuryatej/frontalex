@@ -1,0 +1,9 @@
+.material-header {
+  background-color: #3f51b5 !important;
+}
+
+/* Optional: Slight opacity on hover to mimic material buttons */
+.material-header .nav-link:hover {
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+}

@@ -1,0 +1,110 @@
+<section class="container py-5 box-shadow">
+
+  <!-- Header -->
+  <div class="row justify-content-center text-center mb-5">
+    <div class="col">
+      <h1 class="display-5 fw-bold mb-3">Get In Touch</h1>
+      <p class="text-muted">
+        Have a question or want to work together?
+        Fill out the form and we'll get back to you soon.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Contact Form -->
+    <div class="col-md-6 offset-md-3">
+      <div class="card border">
+
+        <div class="card-header bg-transparent text-center py-3">
+          <h5 class="mb-0">Send a Message</h5>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" novalidate aria-label="Contact form">
+
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="name" class="form-label">
+                Full Name <span class="text-danger" aria-hidden="true">*</span>
+              </label>
+              <input id="name" type="text" class="form-control form-control-sm rounded-0 border border-secondary"
+                [class.is-invalid]="name?.invalid && name?.touched" [class.is-valid]="name?.valid && name?.touched"
+                formControlName="name" autocomplete="off" placeholder="eg: John Doe" aria-required="true"
+                [attr.aria-invalid]="name?.invalid && name?.touched" aria-describedby="nameError" />
+              <div id="nameError" class="invalid-feedback" role="alert">
+                @if (name?.errors?.['required']) { Name is required. }
+                @if (name?.errors?.['pattern']) { Only letters and spaces, min 3 characters. }
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">
+                Email <span class="text-danger" aria-hidden="true">*</span>
+              </label>
+              <input id="email" type="email" class="form-control form-control-sm rounded-0 border border-secondary"
+                [class.is-invalid]="email?.invalid && email?.touched" [class.is-valid]="email?.valid && email?.touched"
+                formControlName="email" autocomplete="off" placeholder="eg: john@example.com" aria-required="true"
+                [attr.aria-invalid]="email?.invalid && email?.touched" aria-describedby="emailError" />
+              <div id="emailError" class="invalid-feedback" role="alert">
+                @if (email?.errors?.['required']) { Email is required. }
+                @if (email?.errors?.['pattern']) { Enter a valid email address. }
+              </div>
+            </div>
+
+            <!-- Subject -->
+            <div class="mb-3">
+              <label for="subject" class="form-label">
+                Subject <span class="text-danger" aria-hidden="true">*</span>
+              </label>
+              <input id="subject" type="text" class="form-control form-control-sm rounded-0 border border-secondary"
+                [class.is-invalid]="subject?.invalid && subject?.touched"
+                [class.is-valid]="subject?.valid && subject?.touched" formControlName="subject" autocomplete="off"
+                placeholder="eg: Project Enquiry" aria-required="true"
+                [attr.aria-invalid]="subject?.invalid && subject?.touched" aria-describedby="subjectError" />
+              <div id="subjectError" class="invalid-feedback" role="alert">
+                @if (subject?.errors?.['required']) { Subject is required. }
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="mb-3">
+              <label for="message" class="form-label">
+                Message <span class="text-danger" aria-hidden="true">*</span>
+              </label>
+              <textarea id="message" class="form-control form-control-sm rounded-0 border border-secondary"
+                [class.is-invalid]="message?.invalid && message?.touched"
+                [class.is-valid]="message?.valid && message?.touched" formControlName="message" rows="4"
+                placeholder="Write your message here..." aria-required="true"
+                [attr.aria-invalid]="message?.invalid && message?.touched" aria-describedby="messageError"></textarea>
+              <div id="messageError" class="invalid-feedback" role="alert">
+                @if (message?.errors?.['required']) { Message is required. }
+                @if (message?.errors?.['minlength']) { Minimum 10 characters. }
+              </div>
+            </div>
+
+            <!-- Required note -->
+            <p class="text-muted small mb-0">
+              <span class="text-danger">*</span> Required fields
+            </p>
+
+          </form>
+        </div>
+
+        <div class="card-footer bg-transparent py-3">
+          <div class="d-flex justify-content-end gap-2">
+            <button type="reset" class="btn btn-light btn-sm fw-bold" aria-label="Reset form">
+              Reset
+            </button>
+            <button type="submit" class="btn btn-sm btn-primary fw-bold" [disabled]="form.invalid" (click)="onSubmit()"
+              aria-label="Submit contact form">
+              Send Message
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
