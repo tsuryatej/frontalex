@@ -3,23 +3,65 @@
     <div class="col-md-5">
       <div class="card border-0 box-shadow rounded-3">
         <div class="card-body p-5">
-          <h3 class="card-title text-center mb-4 text-dark fw-bold">Sign In</h3>
-          <form>
+          <h1 class="card-title text-center mb-4 text-dark fw-bold fs-4" id="signin-heading">Sign In</h1>
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" role="form" aria-labelledby="signin-heading" novalidate id="signinForm">
+
+            <p class="text-muted small mb-3">
+              <span aria-hidden="true">*</span>
+              <span class="visually-hidden">Fields marked with an asterisk are</span> Required fields
+            </p>
+
             <div class="form-floating mb-3">
-              <input type="email" class="form-control form-control-sm rounded-0" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
+              <input type="email" class="form-control form-control-sm rounded-0" id="floatingInput"
+                placeholder="name@example.com" formControlName="email" autocomplete="email" aria-required="true"
+                [attr.aria-invalid]="email?.invalid && email?.touched ? 'true' : 'false'" aria-describedby="emailError"
+                [class.is-invalid]="email?.invalid && email?.touched"
+                [class.is-valid]="email?.valid && email?.touched" />
+              <label for="floatingInput">
+                Email address <span class="text-danger" aria-hidden="true"> *</span>
+              </label>
+              <div id="emailError" class="invalid-feedback" aria-live="polite">
+                @if (email?.errors?.['required']) { Email is required. }
+                @if (email?.errors?.['pattern']) { Enter a valid email address. }
+              </div>
             </div>
+
             <div class="form-floating mb-4">
-              <input type="password" class="form-control form-control-sm rounded-0" id="floatingPassword" placeholder="Password">
-              <label for="floatingPassword">Password</label>
+              <input type="password" class="form-control form-control-sm rounded-0" id="floatingPassword"
+                placeholder="Password" formControlName="password" autocomplete="on" aria-required="true"
+                [attr.aria-invalid]="password?.invalid && password?.touched ? 'true' : 'false'"
+                aria-describedby="passwordError" [class.is-invalid]="password?.invalid && password?.touched"
+                [class.is-valid]="password?.valid && password?.touched" />
+              <label for="floatingPassword">
+                Password
+                <span class="text-danger" aria-hidden="true"> *</span>
+              </label>
+              <div id="passwordError" class="invalid-feedback" aria-live="polite">
+                @if (password?.errors?.['required']) { Password is required. }
+                @if (password?.errors?.['minlength']) { Minimum 8 characters required. }
+              </div>
             </div>
+
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-sm btn-warning me-md-2 fw-bold" type="button">Reset</button>
-              <button class="btn btn-sm btn-material fw-bold" type="button">Login</button>
+              <button class="btn btn-sm btn-outline-secondary me-md-2 focus-ring focus-ring-secondary" type="reset"
+                form="signinForm" aria-label="Reset sign in form" (click)="onReset()">
+                Reset
+              </button>
+
+              <button class="btn btn-sm btn-success" type="submit" form="signinForm" [disabled]="form.invalid"
+                [attr.aria-disabled]="form.invalid ? 'true' : 'false'" aria-label="Sign in to your account">
+                Login
+              </button>
             </div>
+
             <div class="text-center mt-3">
-              <a routerLink="/register" class="text-decoration-none">Don't have an account? Register</a>
+              <a routerLink="/register" class="text-decoration-none" aria-label="Don't have an account? Create a new account"
+              >
+                Don't have an account? <span class="fw-semibold">Create a new account</span>
+              </a>
             </div>
+
           </form>
         </div>
       </div>

@@ -3,30 +3,120 @@
     <div class="col-md-6">
       <div class="card border-0 box-shadow rounded-3">
         <div class="card-body p-5">
-          <h3 class="card-title text-center mb-4 text-dark fw-bold">Create Account</h3>
-          <form>
-            <div class="row">
-              <div class="col-md-6 form-floating mb-3">
-                <input type="text" class="form-control form-control-sm rounded-0" id="firstName" placeholder="First Name">
-                <label for="firstName" class="ms-2">First Name</label>
+          <h1 class="card-title text-center mb-4 text-dark fw-bold fs-4" id="register-heading">Create Account</h1>
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" role="form" aria-labelledby="register-heading" novalidate
+            id="registerForm">
+
+            <p class="text-muted small mb-3">
+              <span aria-hidden="true">*</span>
+              <span class="visually-hidden">Fields marked with an asterisk are</span> Required fields
+            </p>
+
+            <fieldset class="border-0 p-0 mb-0">
+              <legend class="visually-hidden">Personal Information</legend>
+
+              <div class="row">
+                <div class="col-md-6 form-floating mb-3">
+                  <input type="text" class="form-control form-control-sm rounded-0" id="firstName"
+                    placeholder="First Name" formControlName="firstName" autocomplete="given-name" aria-required="true"
+                    [attr.aria-invalid]="firstName?.invalid && firstName?.touched ? 'true' : 'false'"
+                    [class.is-invalid]="firstName?.invalid && firstName?.touched"
+                    [class.border-success]="firstName?.valid && firstName?.touched" aria-describedby="firstNameError" />
+                  <label for="firstName" class="ms-2">
+                    First Name
+                    <span class="text-danger" aria-hidden="true"> *</span>
+                  </label>
+                  <div id="firstNameError" class="invalid-feedback" aria-live="polite">
+                    @if (firstName?.errors?.['required']) { First name is required. }
+                    @if (firstName?.errors?.['pattern']) { Only letters, min 3 characters. }
+                  </div>
+                </div>
+
+                <div class="col-md-6 form-floating mb-3">
+                  <input type="text" class="form-control form-control-sm rounded-0" id="lastName"
+                    placeholder="Last Name" formControlName="lastName" autocomplete="family-name" aria-required="true"
+                    [attr.aria-invalid]="lastName?.invalid && lastName?.touched ? 'true' : 'false'"
+                    [class.is-invalid]="lastName?.invalid && lastName?.touched"
+                    [class.border-success]="lastName?.valid && lastName?.touched" aria-describedby="lastNameError" />
+                  <label for="lastName" class="ms-2">
+                    Last Name
+                    <span class="text-danger" aria-hidden="true"> *</span>
+                  </label>
+                  <div id="lastNameError" class="invalid-feedback" aria-live="polite">
+                    @if (lastName?.errors?.['required']) { Last name is required. }
+                    @if (lastName?.errors?.['pattern']) { Only letters, min 3 characters. }
+                  </div>
+                </div>
               </div>
-              <div class="col-md-6 form-floating mb-3">
-                <input type="text" class="form-control form-control-sm rounded-0" id="lastName" placeholder="Last Name">
-                <label for="lastName" class="ms-2">Last Name</label>
-              </div>
-            </div>
+
+            </fieldset>
+
             <div class="form-floating mb-3">
-              <input type="email" class="form-control form-control-sm rounded-0" id="regEmail" placeholder="name@email.com">
-              <label for="regEmail">Email address</label>
+              <input type="email" class="form-control form-control-sm rounded-0" id="regEmail"
+                placeholder="name@email.com" formControlName="email" autocomplete="email" aria-required="true"
+                [attr.aria-invalid]="email?.invalid && email?.touched ? 'true' : 'false'"
+                [class.is-invalid]="email?.invalid && email?.touched"
+                [class.border-success]="email?.valid && email?.touched" aria-describedby="regEmailError" />
+              <label for="regEmail">
+                Email address
+                <span class="text-danger" aria-hidden="true"> *</span>
+              </label>
+              <div id="regEmailError" class="invalid-feedback" aria-live="polite">
+                @if (email?.errors?.['required']) { Email is required. }
+                @if (email?.errors?.['pattern']) { Enter a valid email address. }
+              </div>
             </div>
-            <div class="form-floating mb-4">
-              <input type="password" class="form-control form-control-sm rounded-0" id="regPassword" placeholder="Password">
-              <label for="regPassword">Password</label>
+
+            <div class="mb-4">
+              <div class="form-floating position-relative">
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-sm rounded-0 pe-5"
+                  id="regPassword" placeholder="Password" formControlName="password" autocomplete="new-password"
+                  aria-required="true" [attr.aria-invalid]="password?.invalid && password?.touched ? 'true' : 'false'"
+                  [class.is-invalid]="password?.invalid && password?.touched"
+                  [class.border-success]="password?.valid && password?.touched"
+                  aria-describedby="regPasswordHint regPasswordError" />
+                <label for="regPassword">
+                  Password
+                  <span class="text-danger" aria-hidden="true"> *</span>
+                </label>
+
+                <button type="button" class="password-toggle" (click)="togglePassword()"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+                  [attr.aria-pressed]="showPassword">
+                  {{ showPassword ? 'Hide' : 'Show' }}
+                </button>
+              </div>
+
+              <div id="regPasswordHint" class="form-text text-muted small">
+                Minimum 8 characters.
+              </div>
+              <div id="regPasswordError" class="invalid-feedback" aria-live="polite">
+                @if (password?.errors?.['required']) { Password is required. }
+                @if (password?.errors?.['minlength']) { Minimum 8 characters required. }
+              </div>
             </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-sm btn-warning btn-sm me-md-2 fw-bold" type="button">Reset</button>
-              <button class="btn btn-material btn-sm shadow-sm fw-bold" type="button">Register</button>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+              <button class="btn btn-sm btn-outline-secondary me-md-2 focus-ring focus-ring-secondary" type="reset"
+                form="registerForm" aria-label="Reset registration form" (click)="onReset()">
+                Reset
+              </button>
+
+              <button class="btn btn-sm btn-dark" type="submit" form="registerForm"
+                [attr.disabled]="form.invalid ? true : null" [attr.aria-disabled]="form.invalid ? 'true' : 'false'"
+                aria-label="Submit and create your account">
+                Register
+              </button>
             </div>
+
+            <div class="text-center mt-3">
+              <a routerLink="/login" class="text-decoration-none" aria-label="Already have an account? Sign in">
+                Already have an account?
+                <span class="fw-semibold">Sign in</span>
+              </a>
+            </div>
+
           </form>
         </div>
       </div>
